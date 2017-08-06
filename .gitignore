@@ -15,3 +15,7 @@
 /vendor/
 /web/bundles/
 /web/uploads/
+/.idea
+angular2.clean.zip
+angular2rc3.docs.zip
+angular2rc3/node_modules/
