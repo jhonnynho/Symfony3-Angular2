@@ -23,6 +23,13 @@ var VideoService = (function () {
         return this._http.post(this.url + "/video/new", params, { headers: headers })
             .map(function (res) { return res.json(); });
     };
+    VideoService.prototype.update = function (token, video, id) {
+        var json = JSON.stringify(video);
+        var params = "json=" + json + "&authorization=" + token;
+        var headers = new http_1.Headers({ 'Content-Type': 'application/x-www-form-urlencoded' });
+        return this._http.post(this.url + "/video/edit/" + id, params, { headers: headers })
+            .map(function (res) { return res.json(); });
+    };
     VideoService.prototype.getVideo = function (id) {
         return this._http.get(this.url + "/video/detail/" + id).map(function (res) { return res.json(); });
     };
@@ -35,6 +42,21 @@ var VideoService = (function () {
             page = 1;
         }
         return this._http.get(this.url + "/video/list?page=" + page).map(function (res) { return res.json(); });
+    };
+    VideoService.prototype.search = function (search, page) {
+        if (search === void 0) { search = null; }
+        if (page === void 0) { page = null; }
+        if (page == null) {
+            page = 1;
+        }
+        var http;
+        if (search == null) {
+            http = this._http.get(this.url + "/video/search").map(function (res) { return res.json(); });
+        }
+        else {
+            http = this._http.get(this.url + "/video/search/" + search + "?page=" + page).map(function (res) { return res.json(); });
+        }
+        return http;
     };
     VideoService = __decorate([
         core_1.Injectable(), 

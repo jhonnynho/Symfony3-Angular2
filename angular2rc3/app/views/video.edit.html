@@ -1,18 +1,17 @@
-<div class="col-md-12" *ngIf="identity">
+<div class="loader" *ngIf="loading == 'show'">
+    <img src="../../assets/images/ajax-gray.gif">
+</div>
+<div class="col-md-12" *ngIf="identity && video && video.user && video.user.id">
     <hr/>
     <h1>{{titulo}}</h1>
     <hr/>
     <div class="alert alert-success" *ngIf="status == 'success'">
-        Datos básicos de tu nuevo video <strong>{{video.title}}</strong> guardados,
-        ahora añade una imagen y un video
+        Datos básicos de tu video <strong>{{video.title}}</strong> guardados.
     </div>
     <div class="alert alert-danger" *ngIf="status == 'error'">
         Datos básicos no guardados
     </div>
-    <form #newVideoForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-4" *ngIf="status != 'success'">
-        <p>
-            Paso 1 de 3. Añade la información básica de tu video
-        </p>
+    <form #updateVideoForm="ngForm" (ngSubmit)="onSubmit()" class="col-md-4">
         <p>
             <label>Titulo:</label>
             <input type="text" class="form-control" #title="ngForm" ngControl="title" [(ngModel)]="video.title" required />
@@ -29,14 +28,14 @@
                 <option value="private" [attr.selected]="video.status === 'private' ? 'selected' : null">Privado</option>
             </select>
         </p>
-        <input type="submit" value="Crear Video" class="btn btn-success">
+        <input type="submit" value="Actualizar" class="btn btn-success" [disabled]="!updateVideoForm.form.valid" />
     </form>
 
-    <div class="col-md-4" *ngIf="status == 'success' && uploadedImage ==false">
+    <button class="btn btn-warning" (click)="setChangeUpload('image')" *ngIf="!changeUpload || changeUpload == 'video' || changeUpload == 'false'">
+        Actualizar imagen
+    </button>
+    <div class="col-md-4" *ngIf="changeUpload == 'image'">
         <h4>Imagen del video</h4>
-        <p>
-            Paso 2 de 3. Sube la imagen del video
-        </p>
         <p>
             <input type="file" placeholder="Subir imagen..." (change)="fileChangeEventImage($event)" />
         </p>
@@ -50,14 +49,14 @@
             </div>
         </div>
         <p id="status"></p>
-        <button class="btn btn-default" (click)="nextUploadVideo()">Continuar y subir el video</button>
+        <button class="btn btn-warning" (click)="setChangeUpload('false')">Cerrar</button>
     </div>
 
-    <div class="col-md-4" *ngIf="status == 'success' && uploadedImage == true">
+    <button class="btn btn-warning" (click)="setChangeUpload('video')" *ngIf="!changeUpload || changeUpload == 'image' || changeUpload == 'false'">
+        Actualizar Video
+    </button>
+    <div class="col-md-4" *ngIf="changeUpload == 'video'">
         <h4>Sube el video</h4>
-        <p>
-            Paso 3 de 3. Sube tu video
-        </p>
         <p>
             <input type="file" placeholder="Subir video..." (change)="fileChangeEventVideo($event)" />
         </p>
@@ -71,6 +70,6 @@
             </div>
         </div>
         <p id="status"></p>
-        <button class="btn btn-default" (click)="redirectToVideo()">Continuar y ver como ha quedado</button>
+        <button class="btn btn-warning" (click)="setChangeUpload('false')">Cerrar</button>
     </div>
 </div>

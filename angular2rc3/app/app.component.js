@@ -14,12 +14,22 @@ var router_1 = require("@angular/router");
 var login_service_1 = require('./services/login.service');
 // Decorador component, indicamos en que etiqueta se va a cargar la 
 var AppComponent = (function () {
-    function AppComponent(_loginService) {
+    function AppComponent(_loginService, _route, _router) {
         this._loginService = _loginService;
+        this._route = _route;
+        this._router = _router;
     }
     AppComponent.prototype.ngOnInit = function () {
         this.identity = this._loginService.getIdentity();
         this.token = this._loginService.getToken();
+    };
+    AppComponent.prototype.search = function () {
+        if (this.searchString != null) {
+            this._router.navigate(['/search', this.searchString]);
+        }
+        else {
+            this._router.navigate(['/index']);
+        }
     };
     AppComponent = __decorate([
         core_1.Component({
@@ -28,7 +38,7 @@ var AppComponent = (function () {
             directives: [router_1.ROUTER_DIRECTIVES],
             providers: [login_service_1.LoginService]
         }), 
-        __metadata('design:paramtypes', [login_service_1.LoginService])
+        __metadata('design:paramtypes', [login_service_1.LoginService, router_1.ActivatedRoute, router_1.Router])
     ], AppComponent);
     return AppComponent;
 }());

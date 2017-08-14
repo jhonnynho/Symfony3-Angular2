@@ -6,6 +6,8 @@ var default_component_1 = require("./components/default.component");
 var user_edit_component_1 = require("./components/user.edit.component");
 var video_new_component_1 = require("./components/video.new.component");
 var video_detail_component_1 = require("./components/video.detail.component");
+var video_edit_component_1 = require("./components/video.edit.component");
+var search_component_1 = require("./components/search.component");
 exports.routes = [
     {
         path: "",
@@ -19,7 +21,11 @@ exports.routes = [
     { path: "register", component: register_component_1.RegisterComponent },
     { path: "user-edit", component: user_edit_component_1.UserEditComponent },
     { path: 'create-video', component: video_new_component_1.VideoNewComponent },
-    { path: 'video/:id', component: video_detail_component_1.VideoDetailComponent }
+    { path: 'video/:id', component: video_detail_component_1.VideoDetailComponent },
+    { path: 'edit-video/:id', component: video_edit_component_1.VideoEditComponent },
+    { path: 'search', component: search_component_1.SearchComponent },
+    { path: 'search/:search', component: search_component_1.SearchComponent },
+    { path: 'search/:search/:page', component: search_component_1.SearchComponent },
 ];
 exports.APP_ROUTER_PROVIDERS = [
     router_1.provideRouter(exports.routes)

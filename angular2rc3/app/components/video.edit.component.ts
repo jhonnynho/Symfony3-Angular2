@@ -7,19 +7,22 @@ import {User} from "../model/user";
 import {Video} from "../model/video";
 
 @Component({
-    selector: "video-new",
-    templateUrl: "app/views/video.new.html",
+    selector: "video-edit",
+    templateUrl: "app/views/video.edit.html",
     directives: [ROUTER_DIRECTIVES],
     providers: [LoginService, UploadService, VideoService]
 })
 
-export class VideoNewComponent implements OnInit{
-    public titulo: string = "Crear un nuevo video";
+export class VideoEditComponent implements OnInit{
+    public titulo: string = "Modificar Video";
     public video;
     public errorMessage;
     public status;
+    public status_get_video;
     public uploadedImage;
+    public changeUpload;
     public identity;
+    public loading;
 
     constructor(
         private _loginService: LoginService,
@@ -32,41 +35,77 @@ export class VideoNewComponent implements OnInit{
     }
 
     ngOnInit(){
+        this.loading = "show";
         let identity = this._loginService.getIdentity();
-        this.identity = identity;
-
-        if(identity == null) {
-            this._router.navigate(['/index']);
-        }else{
-            this.video = new Video(1,"","","public","null","null",null,null);
-        }
+        this.video = new Video(1,"","","public","null","null",null,null);
+        this.getVideo();
     }
 
     callVideoStatus(value){
         this.video.status = value;
     }
 
-    onSubmit(){
-        console.log(this.video);
-        let token = this._loginService.getToken();
-        this._videoService.create(token, this.video).subscribe(
-            response => {
-                this.status = response.status;
-                if(this.status != "success"){
-                    this.status = "error";
-                }else{
-                    this.video = response.data;
-                }
-            },
-            error => {
-                this.errorMessage = <any>error;
+    setChangeUpload(value:string){
+        this.changeUpload = value;
+    }
 
-                if(this.errorMessage != null){
-                    console.log(this.errorMessage);
-                    alert("Error en la peticion");
-                }
+    onSubmit(){
+        this._route.params.subscribe(
+            params => {
+                let id = +params['id'];
+                let token = this._loginService.getToken();
+                this._videoService.update(token, this.video, id).subscribe(
+                    response => {
+                        this.status = response.status;
+                        if(this.status != "success"){
+                            this.status = "error";
+                        }
+                    },
+                    error => {
+                        this.errorMessage = <any>error;
+
+                        if(this.errorMessage != null){
+                            console.log(this.errorMessage);
+                            alert("Error en la peticion");
+                        }
+                    }
+                );
             }
         );
+    }
+
+    getVideo(){
+        this._route.params.subscribe(params => {
+            let id = +params["id"];
+
+            this.loading = "show";
+            this._videoService.getVideo(id).subscribe(
+                response => {
+                    this.video = response.data;
+                    this.status_get_video = response.status;
+
+                    if(this.status_get_video != "success"){
+                        this._router.navigate(["/index"]);
+                    }
+
+                    if(this.identity && this.identity != null && this.identity.sub == this.video.user.id){
+
+                    }else{
+                        this._router.navigate(['/index']);
+                    }
+
+                    this.loading = "hide";
+                },
+                error => {
+                    this.errorMessage = <any>error;
+
+                    if(this.errorMessage != null){
+                        console.log(this.errorMessage);
+                        alert("Error en la peticion");
+                    }
+                }
+            );
+        });
     }
 
     public filesToUpload: Array<File>;
@@ -116,3 +155,4 @@ export class VideoNewComponent implements OnInit{
         this._router.navigate(['/video', this.video.id]);
     }
 }
+
