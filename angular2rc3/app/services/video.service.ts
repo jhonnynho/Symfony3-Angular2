@@ -60,4 +60,11 @@ export class VideoService {
         return http;
     }
 
+    getChannel(user, page = null){
+        if(page == null){
+            page = 1;
+        }
+        return this._http.get(this.url+"/user/channel/"+user+"?page="+page).map(res => res.json());
+    }
+
 }

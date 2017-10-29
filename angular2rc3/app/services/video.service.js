@@ -58,6 +58,13 @@ var VideoService = (function () {
         }
         return http;
     };
+    VideoService.prototype.getChannel = function (user, page) {
+        if (page === void 0) { page = null; }
+        if (page == null) {
+            page = 1;
+        }
+        return this._http.get(this.url + "/user/channel/" + user + "?page=" + page).map(function (res) { return res.json(); });
+    };
     VideoService = __decorate([
         core_1.Injectable(), 
         __metadata('design:paramtypes', [http_1.Http])

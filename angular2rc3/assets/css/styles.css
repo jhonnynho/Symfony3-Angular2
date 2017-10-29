@@ -45,7 +45,7 @@
 
 .video-image-thumb img{
     width: 100%;
-    margin-top: -95px;
+    margin-top: -27px;
 }
 
 .video-item .data{
@@ -78,21 +78,40 @@
 
 .last-video-item .last-video-image-thumb{
     width: 80px;
-    height: 61px;
+    height: 81px;
+    margin-top: -1px;
     overflow: hidden;
     background: #e7e7e7;
+    border-radius: 4px 0px 0px 4px;
 }
 
 .last-video-image-thumb img{
-    width: 80px;
-    margin-left: -15px;
-    margin-top: -7px;
+    width: 120px;
+    margin-left: -37px;
+    /*margin-top: -7px;*/
 }
 
 .last-video-item .data{
     border: 1px solid #ddd !important;
     border-left: 0px !important;
     border-radius: 0px 0px 4px 4px;
-    height: 62px;
+    height: 82px;
     margin-top: -1px;
+}
+
+.channel-head{
+    text-align: center;
+}
+
+.image-channel{
+    width: 150px;
+    height: 150px;
+    border-radius: 500px;
+    overflow: hidden;
+    margin: 0px auto;
+    background: #ccc;
+}
+
+.image-channel .img{
+    height: 160px
 }
